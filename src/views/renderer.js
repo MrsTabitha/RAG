@@ -52,7 +52,8 @@ if (document.getElementById('login-form')) {
         console.log('Tempo de resposta getUsuarios:', (fim - inicio), 'ms');
         if (usuarios[username] && usuarios[username].senha === password) {
             localStorage.setItem('usuarioAtual', username);
-            window.location.href = 'preferencias.html';
+            console.log('Login bem-sucedido! Redirecionando...');
+            window.api.redirecionarParaDashboard();
         } else {
             alert('Usuário ou senha incorretos');
             // limparFormularioLogin();
@@ -85,3 +86,37 @@ function logout() {
     window.location.href = 'index.html';
 }
 
+/* CHATBOT */
+const form = document.getElementById('chat-form');
+const input = document.getElementById('chat-input');
+const messagesDiv = document.getElementById('chat-messages');
+const logoutBtn = document.getElementById('logout-btn');
+
+logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('usuarioAtual');
+    window.location.href = 'index.html';
+});
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = input.value.trim();
+    if (msg) {
+        const msgElement = document.createElement('div');
+        msgElement.classList.add('user-message');
+        msgElement.textContent = msg;
+        messagesDiv.appendChild(msgElement);
+
+        // Scroll automático para a última mensagem
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        input.value = '';
+        // Simulação de resposta do bot (pode integrar com Gemini depois)
+        setTimeout(() => {
+            const botResponse = document.createElement('div');
+            botResponse.classList.add('bot-message');
+            botResponse.textContent = 'Resposta do BitByBit para: ' + msg;
+            messagesDiv.appendChild(botResponse);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }, 500);
+    }
+});

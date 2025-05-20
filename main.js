@@ -2,11 +2,12 @@ const { app, BrowserWindow, ipcMain, nativeTheme, Menu, shell, } = require('elec
 const path = require('path');
 const { getUsuarios, setUsuarios } = require('./userStorage');
 
+let win;
 
 //Aqui estamos criando a janela
 function createWindow() {
     nativeTheme.themeSource = 'light'
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 1000,
         height: 800,
         icon: './src/public/img/icone.png',
@@ -45,6 +46,10 @@ app.whenReady().then(() => {
     app.on('activate', function () {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
+});
+
+ipcMain.on('ir-para-dashboard', () => {
+    win.loadFile(path.join(__dirname, 'src', 'views', 'chat.html'));
 });
 
 app.on('window-all-closed', function () {

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <title>BitByBit Chat</title>
+    <link rel="shortcut icon" href="../public/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="../public/css/chat.css"> <!-- novo CSS específico para o chat -->
+</head>
+
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>BitByBit Chat</h1>
+            <button id="logout-btn">Sair</button>
+        </header>
+
+        <main class="chat-messages" id="chat-messages">
+            <!-- Mensagens serão adicionadas aqui -->
+        </main>
+
+        <form id="chat-form" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Digite sua mensagem..." autocomplete="off" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+
+</html>
