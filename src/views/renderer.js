@@ -53,7 +53,7 @@ if (document.getElementById('login-form')) {
         if (usuarios[username] && usuarios[username].senha === password) {
             localStorage.setItem('usuarioAtual', username);
             console.log('Login bem-sucedido! Redirecionando...');
-            window.api.redirecionarParaDashboard();
+            window.api.redirecionarParaChat();
         } else {
             alert('Usuário ou senha incorretos');
             // limparFormularioLogin();
@@ -87,6 +87,7 @@ function logout() {
 }
 
 /* CHATBOT */
+
 const form = document.getElementById('chat-form');
 const input = document.getElementById('chat-input');
 const messagesDiv = document.getElementById('chat-messages');
@@ -97,26 +98,39 @@ logoutBtn.addEventListener('click', () => {
     window.location.href = 'index.html';
 });
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = input.value.trim();
-    if (msg) {
-        const msgElement = document.createElement('div');
-        msgElement.classList.add('user-message');
-        msgElement.textContent = msg;
-        messagesDiv.appendChild(msgElement);
+    if (!msg) return;
 
-        // Scroll automático para a última mensagem
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Mensagem do usuário
+    const userDiv = document.createElement('div');
+    userDiv.classList.add('user-message');
+    userDiv.textContent = msg;
+    messagesDiv.appendChild(userDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-        input.value = '';
-        // Simulação de resposta do bot (pode integrar com Gemini depois)
-        setTimeout(() => {
-            const botResponse = document.createElement('div');
-            botResponse.classList.add('bot-message');
-            botResponse.textContent = 'Resposta do BitByBit para: ' + msg;
-            messagesDiv.appendChild(botResponse);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }, 500);
+    input.value = '';
+
+    // Carregando resposta
+    const botDiv = document.createElement('div');
+    botDiv.classList.add('bot-message');
+    botDiv.textContent = "Pensando...";
+    messagesDiv.appendChild(botDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+        const resposta = await window.api.gerarResposta(msg);
+        botDiv.textContent = resposta;
+    } catch (error) {
+        botDiv.textContent = "Erro ao obter resposta do Gemini.";
+        console.error(error);
     }
+
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
+
+
+
+/* gemini */
+

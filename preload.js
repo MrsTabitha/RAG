@@ -4,7 +4,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('api', {
     getUsuarios: () => ipcRenderer.invoke('get-usuarios'),
     setUsuarios: (usuarios) => ipcRenderer.invoke('set-usuarios', usuarios),
-    redirecionarParaDashboard: () => ipcRenderer.send('ir-para-dashboard')
+    redirecionarParaChat: () => ipcRenderer.send('ir-para-chat'),
+    gerarResposta: (mensagem) => ipcRenderer.invoke('gerar-resposta', mensagem),
 });
 
 // Pré-carregamento opcional para comunicação segura, vazio por enquanto.

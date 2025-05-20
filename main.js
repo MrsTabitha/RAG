@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, nativeTheme, Menu, shell, } = require('electron');
 const path = require('path');
 const { getUsuarios, setUsuarios } = require('./userStorage');
+const { gerarResposta, obterRespostaGemini } = require(path.join(__dirname, 'src', 'views', 'gemini.js'));
 
 let win;
 
@@ -48,7 +49,7 @@ app.whenReady().then(() => {
     });
 });
 
-ipcMain.on('ir-para-dashboard', () => {
+ipcMain.on('ir-para-chat', () => {
     win.loadFile(path.join(__dirname, 'src', 'views', 'chat.html'));
 });
 
@@ -56,15 +57,15 @@ app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit();
 });
 
+ipcMain.handle('gerar-resposta', async (event, mensagem) => {
+    return await obterRespostaGemini(mensagem);
+});
+
 // Template do Menu
 const template = [
     {
         label: 'Arquivo',
         submenu: [
-            {
-                label: 'Janela Secundária',
-                click: () => childWindow()
-            },
             {
                 label: 'Sair',
                 click: () => app.quit(),
@@ -106,13 +107,6 @@ const template = [
             {
                 label: 'Docs',
                 click: () => shell.openExternal('https://www.electronjs.org/pt/docs/latest/')
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Sobre',
-                click: () => aboutWindow()
             }
         ]
     }
