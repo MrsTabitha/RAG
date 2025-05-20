@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- evitar ataques de Cross Site Scripting (injeção de dados) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <title>Bit By Bit</title>
+    <link rel="shortcut icon" href="../public/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <form id="cadastro-form">
+            <input type="text" id="new-username" placeholder="Novo usuário" required>
+            <input type="password" id="new-password" placeholder="Senha" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem uma conta? <a href="index.html">Voltar ao login</a></p>
+    </div>
+    
+    <script src="renderer.js"></script>
+</body>
+
+</html>

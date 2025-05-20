@@ -1,0 +1,23 @@
+{
+  "name": "rag",
+  "version": "1.0.0",
+  "description": "Trabalho Final Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrsTabitha/RAG.git"
+  },
+  "author": "Talita Müller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MrsTabitha/RAG/issues"
+  },
+  "homepage": "https://github.com/MrsTabitha/RAG#readme",
+  "devDependencies": {
+    "electron": "^36.2.1"
+  }
+}
