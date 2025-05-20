@@ -72,7 +72,7 @@ if (document.getElementById('cadastro-form')) {
             alert('Usuário já existe!');
             return;
         }
-        usuarios[username] = { senha: password, preferencias: [] };
+        usuarios[username] = { senha: password};
         await window.api.setUsuarios(usuarios);
         alert('Cadastro realizado com sucesso!');
         // Limpar o localStorage antes de redirecionar
