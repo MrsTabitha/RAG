@@ -1,5 +1,7 @@
+/* IMPORTAÇÃO DE FONTE */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+/* RESET E CONFIGURAÇÕES GERAIS */
 *{
     margin: 0;
     padding: 0;
@@ -10,15 +12,17 @@
     font-style: normal;
 }
 
+/* ESTILO DO BODY */
 body {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* altura total da tela */
+    height: 100vh; 
     margin: 0;
 }
 
+/* CONTAINER CENTRAL */
 .container {
     width: 30em;
     height: 30em;
@@ -29,8 +33,6 @@ body {
     background-color: rgb(252, 251, 251);
     border-radius: 1em;
     padding: 2em;
-
-    /* sombra estilizada */
     box-shadow: 0 0 20px rgba(0, 0, 80, 0.3), 
                 0 0 40px rgba(0, 128, 255, 0.2);
 }
@@ -40,7 +42,7 @@ body {
     color: #042c74;
 }
 
-
+/* ÍCONE */
 .icon{
     display: flex;
     flex-direction: column;
@@ -53,6 +55,7 @@ body {
     height: 10em;
 }
 
+/* TÍTULOS E PARÁGRAFOS */
 .header h1, p{
     text-align: center;
     margin: 0.2em;
@@ -60,9 +63,9 @@ body {
 
 .container h1{
     font-weight: 1000;
-    
 }
 
+/* FORMULÁRIOS DE LOGIN E CADASTRO */
 #login-form , #cadastro-form{
     margin: 1.5em;
     display: flex;
@@ -82,7 +85,6 @@ body {
 }
 
 #login-form button, #cadastro-form button{
-    
     height: 2.1em;
     width: 12em;
     border-radius: 1em;
@@ -96,9 +98,11 @@ body {
     letter-spacing: 0.2em;
 }
 
+/* ===================== */
+/* ESTILO DO CHAT        */
+/* ===================== */
 
-
-/* CHAT*/
+/* CONTAINER DO CHAT */
 .chat-container {
     width: 40em;
     height: 40em;
@@ -111,6 +115,7 @@ body {
     overflow: hidden;
 }
 
+/* CABEÇALHO DO CHAT */
 .chat-header {
     background-color: #0550a4;
     color: white;
@@ -135,6 +140,7 @@ body {
     cursor: pointer;
 }
 
+/* MENSAGENS DO CHAT */
 .chat-messages {
     flex: 1;
     padding: 1em;
@@ -161,6 +167,7 @@ body {
     background-color: #f0f0f0;
 }
 
+/* ÁREA DE DIGITAÇÃO DO CHAT */
 .chat-input-area {
     display: flex;
     padding: 1em;
@@ -184,4 +191,3 @@ body {
     border-radius: 1em;
     cursor: pointer;
 }
-

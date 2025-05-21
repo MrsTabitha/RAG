@@ -1,7 +1,9 @@
+// Recupera o usuário logado do armazenamento local (localStorage)
 let usuarioAtual = localStorage.getItem('usuarioAtual');
 
-// Função para limpar e habilitar campos do formulário
+// Função que limpa os campos do formulário de login e garante que estão habilitados
 function limparFormularioLogin() {
+    
     const form = document.getElementById('login-form');
     if (form) {
         form.reset();
@@ -22,17 +24,18 @@ function limparFormularioLogin() {
     }
 }
 
-// Login
+/* ===========================
+    BLOCO DE LOGIN
+   =========================== */
 if (document.getElementById('login-form')) {
-    // Remover reset automático para testar se é isso que está causando o bug
-    // limparFormularioLogin();
 
+    // Habilita manualmente os campos, caso o reset os deixe travados
     document.getElementById('username').disabled = false;
     document.getElementById('username').readOnly = false;
     document.getElementById('password').disabled = false;
     document.getElementById('password').readOnly = false;
 
-    // Forçar habilitação dos campos após 1 segundo
+    // Força a habilitação dos campos após 1 segundo
     setTimeout(() => {
         document.getElementById('username').disabled = false;
         document.getElementById('username').readOnly = false;
@@ -41,19 +44,24 @@ if (document.getElementById('login-form')) {
         console.log('Campos de login forçados a habilitar após 1s');
     }, 1000);
 
+    // Trata o envio do formulário de login
     document.getElementById('login-form').addEventListener('submit', async function (e) {
+
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        
         console.log('Iniciando busca de usuários...');
         const inicio = Date.now();
         const usuarios = await window.api.getUsuarios();
         const fim = Date.now();
         console.log('Tempo de resposta getUsuarios:', (fim - inicio), 'ms');
+
+        // Verifica se o usuário e a senha existem e batem
         if (usuarios[username] && usuarios[username].senha === password) {
             localStorage.setItem('usuarioAtual', username);
             console.log('Login bem-sucedido! Redirecionando...');
-            window.api.redirecionarParaChat();
+            window.api.redirecionarParaChat(); // Solicita ao processo principal para mudar de página
         } else {
             alert('Usuário ou senha incorretos');
             // limparFormularioLogin();
@@ -61,49 +69,62 @@ if (document.getElementById('login-form')) {
     });
 }
 
-// Formulário de Cadastro
+/* ===========================
+    BLOCO DE CADASTRO
+   =========================== */
 if (document.getElementById('cadastro-form')) {
+
     document.getElementById('cadastro-form').addEventListener('submit', async function (e) {
         e.preventDefault();
         const username = document.getElementById('new-username').value;
         const password = document.getElementById('new-password').value;
+        
         const usuarios = await window.api.getUsuarios();
+        
         if (usuarios[username]) {
             alert('Usuário já existe!');
             return;
         }
-        usuarios[username] = { senha: password};
+
+        // Adiciona novo usuário e salva na base local
+        usuarios[username] = { senha: password };
         await window.api.setUsuarios(usuarios);
+
         alert('Cadastro realizado com sucesso!');
-        // Limpar o localStorage antes de redirecionar
-        localStorage.removeItem('usuarioAtual');
-        window.location.href = 'index.html';
+        localStorage.removeItem('usuarioAtual'); // Remove qualquer login antigo
+        window.location.href = 'index.html'; // Redireciona para a tela de login
     });
 }
 
+// Função de logout: limpa login atual e volta pra tela inicial
 function logout() {
     localStorage.removeItem('usuarioAtual');
     window.location.href = 'index.html';
 }
 
-/* CHATBOT */
+/* ===========================
+    BLOCO DO CHATBOT
+   =========================== */
 
+// Elementos da interface
 const form = document.getElementById('chat-form');
 const input = document.getElementById('chat-input');
 const messagesDiv = document.getElementById('chat-messages');
 const logoutBtn = document.getElementById('logout-btn');
 
+// Botão de logout
 logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('usuarioAtual');
     window.location.href = 'index.html';
 });
 
+// Envia mensagem no chat
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = input.value.trim();
     if (!msg) return;
 
-    // Mensagem do usuário
+    // Exibe a mensagem do usuário
     const userDiv = document.createElement('div');
     userDiv.classList.add('user-message');
     userDiv.textContent = msg;
@@ -112,7 +133,7 @@ form.addEventListener('submit', async (e) => {
 
     input.value = '';
 
-    // Carregando resposta
+    // Exibe texto de "Pensando..." enquanto aguarda resposta
     const botDiv = document.createElement('div');
     botDiv.classList.add('bot-message');
     botDiv.textContent = "Pensando...";
@@ -120,6 +141,7 @@ form.addEventListener('submit', async (e) => {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
     try {
+        // Solicita a resposta ao Gemini via API do Electron
         const resposta = await window.api.gerarResposta(msg);
         botDiv.textContent = resposta;
     } catch (error) {
@@ -129,8 +151,3 @@ form.addEventListener('submit', async (e) => {
 
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
-
-
-
-/* gemini */
-
